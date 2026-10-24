@@ -1,0 +1,140 @@
+/**
+ * @file public/css/animations.css
+ * @description Smooth, GPU-accelerated micro-animations (transform/opacity only).
+ * Includes drifting ambient orbs for frosted glass surfaces and copy-pulse feedback.
+ * Full compliance with prefers-reduced-motion.
+ */
+
+/* Background Ambient Orbs Container */
+.ambient-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+  will-change: transform;
+}
+
+.orb-purple {
+  width: 480px;
+  height: 480px;
+  background: var(--orb-1-color);
+  top: -100px;
+  left: 15%;
+  animation: driftPurple 22s ease-in-out infinite alternate;
+}
+
+.orb-cyan {
+  width: 520px;
+  height: 520px;
+  background: var(--orb-2-color);
+  bottom: 5%;
+  right: 10%;
+  animation: driftCyan 26s ease-in-out infinite alternate;
+}
+
+.orb-pink {
+  width: 380px;
+  height: 380px;
+  background: var(--orb-3-color);
+  top: 40%;
+  left: 65%;
+  animation: driftPink 28s ease-in-out infinite alternate;
+  opacity: 0.25;
+}
+
+/* Keyframes for slow, elegant orb drift */
+@keyframes driftPurple {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(120px, 80px, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(-80px, 160px, 0) scale(0.95);
+  }
+}
+
+@keyframes driftCyan {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-140px, -90px, 0) scale(1.15);
+  }
+  100% {
+    transform: translate3d(90px, -140px, 0) scale(0.9);
+  }
+}
+
+@keyframes driftPink {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-100px, 110px, 0) scale(1.2);
+  }
+}
+
+/* Copy Success Pulse */
+@keyframes copyPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.7);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(34, 211, 238, 0);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0);
+    transform: scale(1);
+  }
+}
+
+.copy-pulse {
+  animation: copyPulse 0.5s ease-out;
+}
+
+/* Fade-in entrance for cards */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-entrance {
+  animation: cardEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Honor prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-orb {
+    animation: none !important;
+    transform: none !important;
+  }
+  .copy-pulse {
+    animation: none !important;
+  }
+  .animate-entrance {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

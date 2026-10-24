@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PassGuard: Zero-Knowledge Password Strength Analyzer and Generator. Real-time dynamic programming entropy evaluation, k-anonymity breach verification, and tactile Neumorphism + Glassmorphism UI.">
+  <title>PassGuard — Real-Time Password Strength Analyzer &amp; Generator</title>
+
+  <!-- External Stylesheets (Strict CSP Compliant) -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/neumorphism.css">
+  <link rel="stylesheet" href="css/glass.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Assistive Technology Live Region -->
+  <div id="a11y-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Background Ambient Drifting Orbs for Glassmorphism Blur -->
+  <div class="ambient-background" aria-hidden="true">
+    <div class="ambient-orb orb-purple"></div>
+    <div class="ambient-orb orb-cyan"></div>
+    <div class="ambient-orb orb-pink"></div>
+  </div>
+
+  <!-- 1. Sticky Glass Header -->
+  <header class="glass-header">
+    <div class="header-content">
+      <a href="#" class="brand-logo" aria-label="PassGuard Home">
+        <svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+        <span>PassGuard</span>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li><a href="#analyzer-section">Analyzer</a></li>
+          <li><a href="#generator-section">Generator</a></li>
+          <li><a href="#reuse-demo-section">Reuse Demo</a></li>
+          <li><a href="#education-section">Education</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Live Backend Health Indicator -->
+        <div id="backend-status-badge" class="status-badge status-online" title="Backend connection status">
+          <span class="status-dot"></span> Checking...
+        </div>
+
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle-btn" class="neu-btn neu-btn-icon" type="button" aria-pressed="false" aria-label="Switch Theme" title="Toggle Dark/Light Theme">
+          <svg id="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main id="main-content" class="app-container">
+
+    <!-- 2. Hero Section -->
+    <section class="hero-section" aria-labelledby="hero-title">
+      <div class="privacy-pill" role="status">
+        <span>🔒 100% Client-Side • Zero-Knowledge • Analyzed in Browser</span>
+      </div>
+      <h1 id="hero-title" class="hero-title">Real-Time Password Strength Analyzer</h1>
+      <p class="hero-subtitle">
+        Evaluate password entropy instantly using pattern decomposition (zxcvbn-style).
+        Passwords never leave your device. All scores are objective heuristic estimates.
+      </p>
+    </section>
+
+    <!-- Main Two-Column Layout for Desktop -->
+    <div class="main-grid">
+
+      <!-- Column 1: Analyzer, Results, Checklist & Suggestions -->
+      <div class="analyzer-column">
+
+        <!-- 3. Analyzer Card -->
+        <section id="analyzer-section" class="glass-card analyzer-card" aria-labelledby="analyzer-heading">
+          <h2 id="analyzer-heading" class="sr-only">Password Analyzer</h2>
+
+          <label for="password-input" class="result-stat-label">Enter Password to Analyze</label>
+          <div class="neu-input-well">
+            <input 
+              type="password" 
+              id="password-input" 
+              class="neu-input-field" 
+              placeholder="Type a password or passphrase..."
+              autocomplete="off" 
+              spellcheck="false" 
+              autocapitalize="off"
+            >
+            <div class="analyzer-input-actions">
+              <!-- Show / Hide Password Toggle -->
+              <button 
+                id="toggle-visibility-btn" 
+                class="neu-btn neu-btn-icon" 
+                type="button" 
+                aria-pressed="false" 
+                aria-label="Show password"
+                title="Show password"
+              >
+                <svg id="visibility-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+
+              <!-- Clear Input Button -->
+              <button 
+                id="clear-password-btn" 
+                class="neu-btn neu-btn-icon" 
+                type="button" 
+                aria-label="Clear password"
+                title="Clear password input"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 5-Segment Strength Meter -->
+          <div class="neu-meter-track" role="progressbar" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" aria-label="Password Strength Score">
+            <div class="meter-segment" id="segment-0"></div>
+            <div class="meter-segment" id="segment-1"></div>
+            <div class="meter-segment" id="segment-2"></div>
+            <div class="meter-segment" id="segment-3"></div>
+            <div class="meter-segment" id="segment-4"></div>
+          </div>
+
+          <div class="meter-header">
+            <span id="meter-score-text" class="meter-score-label">Empty</span>
+            <span id="meter-level-badge" class="status-badge">0.0 bits entropy</span>
+          </div>
+
+          <!-- 4. Results Grid -->
+          <div class="results-grid" style="margin-top: 1rem;">
+            <div class="result-stat-card">
+              <span class="result-stat-label">Heuristic Rating</span>
+              <span id="res-score-level" class="result-stat-val">Very Weak</span>
+              <span class="result-stat-note">Entropy tier</span>
+            </div>
+
+            <div class="result-stat-card">
+              <span class="result-stat-label">Estimated Entropy</span>
+              <span id="res-entropy-val" class="result-stat-val">0.0 bits</span>
+              <span class="result-stat-note">log2(guesses)</span>
+            </div>
+
+            <div class="result-stat-card">
+              <span class="result-stat-label">Crack Time Estimate</span>
+              <span id="res-crack-time" class="result-stat-val">Instant</span>
+              <span class="result-stat-note">10¹⁰ guesses/sec</span>
+            </div>
+          </div>
+
+          <p id="res-attack-assumption" class="result-stat-note" style="margin-top: 0.5rem; text-align: center;">
+            Offline brute-force attack with 10¹⁰ (10 billion) guesses/second (modern GPU cluster on fast hash)
+          </p>
+
+          <!-- Why this rating: Reasons Panel -->
+          <div class="reasons-panel">
+            <h3 class="result-stat-label">Why This Rating</h3>
+            <ul id="res-reasons-list" class="reasons-list">
+              <li class="reason-item">No password entered. Start typing to evaluate strength in real time.</li>
+            </ul>
+          </div>
+
+          <!-- Optional Opt-in Breach Check (k-Anonymity) -->
+          <div class="breach-optin-box">
+            <div class="breach-optin-info">
+              <h4>Breach Database Check (Optional)</h4>
+              <p>Opt-in k-Anonymity verification. Computes SHA-1 locally and queries only the first 5 characters.</p>
+            </div>
+            <label class="neu-toggle-switch" for="breach-optin-toggle">
+              <input type="checkbox" id="breach-optin-toggle" aria-label="Enable k-anonymity breach check">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div id="breach-status-badge" class="breach-badge" hidden></div>
+        </section>
+
+        <!-- 5. Security Checklist -->
+        <section class="glass-card" style="margin-top: 2rem;" aria-labelledby="checklist-heading">
+          <h3 id="checklist-heading">Security Checklist</h3>
+          <p class="hero-subtitle" style="font-size: var(--text-sm); margin-bottom: 1rem;">
+            Completed criteria vs. remaining areas for improvement.
+          </p>
+
+          <div class="checklist-section">
+            <div class="checklist-column">
+              <h4 style="color: var(--color-level-3);">✓ Completed Requirements</h4>
+              <ul id="checklist-completed" class="checklist-items">
+                <li class="checklist-empty-state">None yet — satisfy criteria below</li>
+              </ul>
+            </div>
+
+            <div class="checklist-column">
+              <h4 style="color: var(--color-level-1);">○ Areas to Improve</h4>
+              <ul id="checklist-remaining" class="checklist-items">
+                <li class="checklist-item checklist-item-pending"><span class="pending-icon">○</span> <span>Length at least 12 characters</span></li>
+                <li class="checklist-item checklist-item-pending"><span class="pending-icon">○</span> <span>Length at least 16 characters (recommended)</span></li>
+                <li class="checklist-item checklist-item-pending"><span class="pending-icon">○</span> <span>Contains lowercase letters (a-z)</span></li>
+                <li class="checklist-item checklist-item-pending"><span class="pending-icon">○</span> <span>Contains uppercase letters (A-Z)</span></li>
+                <li class="checklist-item checklist-item-pending"><span class="pending-icon">○</span> <span>Contains numeric digits (0-9)</span></li>
+                <li class="checklist-item checklist-item-pending"><span class="pending-icon">○</span> <span>Contains special symbols (!@#$%^&*)</span></li>
+                <li class="checklist-item checklist-item-pending"><span class="pending-icon">○</span> <span>Free from common dictionary words</span></li>
+                <li class="checklist-item checklist-item-pending"><span class="pending-icon">○</span> <span>Free from sequential or keyboard walk patterns</span></li>
+                <li class="checklist-item checklist-item-pending"><span class="pending-icon">○</span> <span>Free from repeated character sequences</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 6. Dynamic Improvement Suggestions -->
+          <div class="suggestions-box">
+            <h4 style="font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.5px;">Recommended Next Steps</h4>
+            <ul id="suggestions-list" class="suggestions-list">
+              <li class="suggestion-item">Use at least 12–16 characters for high resistance against brute-force attacks.</li>
+              <li class="suggestion-item">Consider using a memorable 4-word passphrase instead of a short complex string.</li>
+            </ul>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Column 2: Secure Generator, Reuse Demo & Education -->
+      <div class="tools-column" style="display: flex; flex-direction: column; gap: 2rem;">
+
+        <!-- 7. Secure Generator Card -->
+        <section id="generator-section" class="glass-card" aria-labelledby="generator-heading">
+          <h2 id="generator-heading">Secure Generator</h2>
+          <p class="hero-subtitle" style="font-size: var(--text-sm); margin-bottom: 1.25rem;">
+            Generated with Web Crypto API and rejection sampling to guarantee zero modulo bias.
+          </p>
+
+          <!-- Mode Switcher -->
+          <div class="generator-modes">
+            <label class="neu-checkbox-label">
+              <input type="radio" name="gen-mode" id="gen-mode-password" class="neu-checkbox" checked>
+              <span>Random Password</span>
+            </label>
+            <label class="neu-checkbox-label">
+              <input type="radio" name="gen-mode" id="gen-mode-passphrase" class="neu-checkbox">
+              <span>Memorable Passphrase</span>
+            </label>
+          </div>
+
+          <!-- Random Password Controls -->
+          <div id="generator-password-controls" class="gen-controls-grid">
+            <div class="gen-slider-group">
+              <div class="gen-slider-header">
+                <label for="gen-length-slider">Length: <span id="gen-length-value">16</span> characters</label>
+              </div>
+              <input type="range" id="gen-length-slider" class="neu-slider" min="12" max="32" value="16" step="1">
+            </div>
+
+            <div class="gen-checkboxes-grid">
+              <label class="neu-checkbox-label">
+                <input type="checkbox" id="gen-opt-upper" class="neu-checkbox" checked>
+                <span>Uppercase (A-Z)</span>
+              </label>
+              <label class="neu-checkbox-label">
+                <input type="checkbox" id="gen-opt-lower" class="neu-checkbox" checked>
+                <span>Lowercase (a-z)</span>
+              </label>
+              <label class="neu-checkbox-label">
+                <input type="checkbox" id="gen-opt-digits" class="neu-checkbox" checked>
+                <span>Numbers (0-9)</span>
+              </label>
+              <label class="neu-checkbox-label">
+                <input type="checkbox" id="gen-opt-symbols" class="neu-checkbox" checked>
+                <span>Symbols (!@#$...)</span>
+              </label>
+              <label class="neu-checkbox-label" style="grid-column: 1 / -1;">
+                <input type="checkbox" id="gen-opt-lookalikes" class="neu-checkbox">
+                <span>Exclude look-alikes (0, O, 1, l, I, |)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Memorable Passphrase Controls -->
+          <div id="generator-passphrase-controls" class="gen-controls-grid" hidden>
+            <div class="gen-slider-group">
+              <div class="gen-slider-header">
+                <label for="gen-word-count">Words: <span id="gen-word-value">4</span> words</label>
+              </div>
+              <input type="range" id="gen-word-count" class="neu-slider" min="4" max="8" value="4" step="1">
+            </div>
+
+            <div style="display: flex; gap: 1rem; align-items: center; margin: 0.5rem 0;">
+              <label for="gen-separator" style="font-size: var(--text-sm); font-weight: 600;">Separator:</label>
+              <select id="gen-separator" class="neu-btn" style="padding: 0.4rem 0.8rem; font-size: var(--text-sm);">
+                <option value="-">Hyphen (-)</option>
+                <option value=".">Dot (.)</option>
+                <option value="_">Underscore (_)</option>
+                <option value=" ">Space ( )</option>
+              </select>
+            </div>
+
+            <div class="gen-checkboxes-grid">
+              <label class="neu-checkbox-label">
+                <input type="checkbox" id="gen-opt-capitalize" class="neu-checkbox" checked>
+                <span>Capitalize words</span>
+              </label>
+              <label class="neu-checkbox-label">
+                <input type="checkbox" id="gen-opt-number" class="neu-checkbox">
+                <span>Include number</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Generate Action Button -->
+          <button id="generate-btn" class="neu-btn neu-btn-primary" type="button" style="width: 100%; margin-top: 0.5rem;">
+            <svg style="width: 18px; height: 18px; stroke: currentColor; fill: none;" viewBox="0 0 24 24">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+            Generate New Password
+          </button>
+
+          <!-- Generated Output Box -->
+          <div class="generated-output-box">
+            <div class="neu-input-well">
+              <input 
+                type="text" 
+                id="generated-password-output" 
+                class="neu-input-field" 
+                readonly 
+                placeholder="Click Generate above..."
+                aria-label="Generated Password Output"
+              >
+              <button 
+                id="copy-generated-btn" 
+                class="neu-btn neu-btn-icon" 
+                type="button" 
+                aria-label="Copy generated password"
+                title="Copy generated password to clipboard"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Mini Strength Meter for Generated Password -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="result-stat-label">Generated Strength</span>
+                <span id="generated-score-text" class="status-badge">Strong</span>
+              </div>
+              <div class="generated-meter-mini">
+                <div id="generated-meter-fill" class="generated-meter-fill"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. Reuse and Uniqueness Demo -->
+        <section id="reuse-demo-section" class="glass-card" aria-labelledby="reuse-demo-heading">
+          <h2 id="reuse-demo-heading">Password Reuse Simulation</h2>
+
+          <!-- Mandatory Educational Safety Banner -->
+          <div class="reuse-warning-banner" role="alert">
+            <svg style="width: 18px; height: 18px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <span>Educational Simulation: Never enter real credentials anywhere on this page.</span>
+          </div>
+
+          <p class="hero-subtitle" style="font-size: var(--text-sm); margin-bottom: 1rem;">
+            Test the domino effect of credential stuffing. Enter a <em>sample fake account name</em> (e.g. "Personal Email") to see why password reuse is devastating:
+          </p>
+
+          <label for="reuse-account-input" class="result-stat-label">Simulated Account Label</label>
+          <div class="neu-input-well" style="margin-top: 0.25rem;">
+            <input 
+              type="text" 
+              id="reuse-account-input" 
+              class="neu-input-field" 
+              placeholder="e.g. My Social Media, Shopping Portal"
+              autocomplete="off"
+            >
+          </div>
+
+          <div id="reuse-compromised-status" hidden></div>
+        </section>
+
+        <!-- 9. Education Section (Accessible Accordion) -->
+        <section id="education-section" class="glass-card" aria-labelledby="education-heading">
+          <h2 id="education-heading">Cybersecurity Education</h2>
+          <p class="hero-subtitle" style="font-size: var(--text-sm); margin-bottom: 1rem;">
+            Core concepts simplified for students and digital citizens.
+          </p>
+
+          <div class="accordion-group">
+            <!-- Item 1 -->
+            <div class="accordion-item">
+              <button class="accordion-header" type="button" aria-expanded="false" aria-controls="panel-1">
+                <span>1. What makes a password truly strong?</span>
+                <span class="accordion-icon" aria-hidden="true">▾</span>
+              </button>
+              <div id="panel-1" class="accordion-panel" hidden>
+                <p>
+                  <strong>Length and unpredictability beat complexity every time.</strong> For years, services forced users to create short passwords packed with symbols (like <code>P@ss1!</code>). Attackers crack these in seconds because humans choose predictable patterns (capital letter first, exclamation mark at the end).
+                </p>
+                <p style="margin-top: 0.5rem;">
+                  A longer passphrase composed of random words (e.g. <code>correct horse battery staple</code>) creates exponential mathematical combinations that defy modern GPU cluster attacks.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="accordion-item">
+              <button class="accordion-header" type="button" aria-expanded="false" aria-controls="panel-2">
+                <span>2. What is password entropy?</span>
+                <span class="accordion-icon" aria-hidden="true">▾</span>
+              </button>
+              <div id="panel-2" class="accordion-panel" hidden>
+                <p>
+                  <strong>Entropy</strong> is a mathematical measurement of randomness and unpredictability, measured in <em>bits</em>. Think of it like rolling fair dice:
+                </p>
+                <ul style="margin: 0.5rem 0 0.5rem 1.25rem;">
+                  <li>Each additional bit doubles the number of guesses an attacker must try: <code>Guesses = 2^Bits</code>.</li>
+                  <li><strong>&lt; 28 bits (Very Weak):</strong> Under 268 million guesses. Cracked in milliseconds.</li>
+                  <li><strong>36–59 bits (Fair):</strong> Millions of guesses. Cracked in minutes to hours offline.</li>
+                  <li><strong>80+ bits (Very Strong):</strong> Over 1.2 × 10²⁴ guesses. Beyond the computing capacity of earth's supercomputers.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="accordion-item">
+              <button class="accordion-header" type="button" aria-expanded="false" aria-controls="panel-3">
+                <span>3. Why is password reuse so dangerous?</span>
+                <span class="accordion-icon" aria-hidden="true">▾</span>
+              </button>
+              <div id="panel-3" class="accordion-panel" hidden>
+                <p>
+                  When you use the same password on multiple websites, your security is only as strong as the <em>weakest website</em> you ever registered for.
+                </p>
+                <p style="margin-top: 0.5rem;">
+                  When a minor forum or shopping site gets breached, automated botnets launch <strong>Credential Stuffing</strong> attacks against email providers, banks, and cloud services using the leaked combination. If you reused the password, all your accounts fall like dominoes.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="accordion-item">
+              <button class="accordion-header" type="button" aria-expanded="false" aria-controls="panel-4">
+                <span>4. Why should you use a password manager?</span>
+                <span class="accordion-icon" aria-hidden="true">▾</span>
+              </button>
+              <div id="panel-4" class="accordion-panel" hidden>
+                <p>
+                  Human brains are terrible at generating and memorizing 80+ unique, 20-character random passwords. A trusted password manager generates, stores, and autofills unique cryptographic passwords for every single site. You only ever need to remember one strong master passphrase.
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="accordion-item">
+              <button class="accordion-header" type="button" aria-expanded="false" aria-controls="panel-5">
+                <span>5. The power of Multi-Factor Authentication (MFA)</span>
+                <span class="accordion-icon" aria-hidden="true">▾</span>
+              </button>
+              <div id="panel-5" class="accordion-panel" hidden>
+                <p>
+                  MFA adds a critical second layer of defense. Even if an attacker steals or guesses your password, they cannot log into your account without your physical hardware key (FIDO2/WebAuthn) or time-based authenticator app token (TOTP).
+                </p>
+              </div>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="accordion-item">
+              <button class="accordion-header" type="button" aria-expanded="false" aria-controls="panel-6">
+                <span>6. What this analyzer CAN and CANNOT tell you</span>
+                <span class="accordion-icon" aria-hidden="true">▾</span>
+              </button>
+              <div id="panel-6" class="accordion-panel" hidden>
+                <p>
+                  <strong>What it does:</strong> Accurately detects known dictionary words, keyboard walks, repetitions, and calculates mathematical Shannon entropy against offline fast-hash brute force models.
+                </p>
+                <p style="margin-top: 0.5rem;">
+                  <strong>What it cannot do:</strong> No software can know your personal secrets (pet names, birth dates, phone numbers). If you use your dog's name, an attacker who knows you will guess it instantly, even if the tool rates it Fair. All ratings are heuristic estimates.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- 10. Footer with Privacy Notice & Limitations -->
+  <footer class="glass-footer">
+    <div class="footer-content">
+      <div>
+        <p><strong>PassGuard Privacy Guarantee:</strong> Zero-Knowledge Architecture. Passwords never leave your device.</p>
+        <p style="margin-top: 0.25rem;">Ratings are heuristic estimates based on 10¹⁰ offline guesses/sec. No tool can guarantee unbreakable security.</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span class="inactivity-badge" title="Auto-clears memory on inactivity">
+          🛡️ Inactivity Wipe: <strong id="inactivity-counter">60s</strong>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Client Application Bootstrap (Vanilla ES Module) -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "passguard",
+  "version": "1.0.0",
+  "description": "PassGuard: Password Strength Analyzer (Neumorphism + Glassmorphism, Zero-Knowledge Node Backend)",
+  "main": "server/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "keywords": [
+    "password-strength",
+    "zero-knowledge",
+    "security",
+    "neumorphism",
+    "glassmorphism",
+    "entropy",
+    "k-anonymity"
+  ],
+  "author": "PassGuard Team",
+  "license": "MIT",
+  "dependencies": {
+    "compression": "^1.8.0",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

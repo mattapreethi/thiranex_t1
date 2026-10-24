@@ -1,0 +1,24 @@
+# Dependency directories
+node_modules/
+passguard/node_modules/
+
+# Environment configuration
+.env
+.env.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# OS & Editor generated files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
